@@ -1,0 +1,36 @@
+package com.parking.action;
+
+import java.util.List;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.parking.service.ReportsService;
+
+@SuppressWarnings("serial")
+public class RepportsAction extends ActionSupport {
+	private ReportsService reportsService;//报表Service
+	@SuppressWarnings("rawtypes")
+	private List reportsList; //报表信息列表
+	
+	public String getRPInfo(){
+		reportsList=reportsService.getReportsInfo();
+		System.out.println("-------------------------------------"+reportsList);
+		return "success";
+	}
+	
+	
+
+	public ReportsService getReportsService() {
+		return reportsService;
+	}
+	public void setReportsService(ReportsService reportsService) {
+		this.reportsService = reportsService;
+	}
+	@SuppressWarnings("rawtypes")
+	public List getReportsList() {
+		return reportsList;
+	}
+	@SuppressWarnings("rawtypes")
+	public void setReportsList(List reportsList) {
+		this.reportsList = reportsList;
+	}
+}

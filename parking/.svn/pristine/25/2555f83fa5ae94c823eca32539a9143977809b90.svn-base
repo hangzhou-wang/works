@@ -1,0 +1,78 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<script type="text/javascript" src="<%=basePath %>js/jquery-1.8.3.js"></script>
+<link type="text/css" rel="stylesheet" href="<%=basePath %>css/visualize.jQuery.css"/>
+<link type="text/css" rel="stylesheet" href="<%=basePath %>css/demopage.css"/>
+<script type="text/javascript" src="<%=basePath %>js/visualize.jQuery.js"></script>
+<style>
+	#countMian{position:absolute;width:500px;height:400px;border:1px solid #ccc;
+		margin-left:600px;margin-top:10px;font-size:14px;line-height:28px;color:#737373;}
+</style>
+<script type="text/javascript">
+	$(function(){
+		//make some charts
+		//$('table').visualize({type: 'pie', pieMargin: 10, title: '2009 Total Sales by Individual'});	
+		//$('table').visualize({type: 'line'});
+		$('table').visualize({type: 'area'});
+		$('table').visualize();
+	});
+</script>
+
+<fieldset id="countMian">
+	<legend style="font-size:20px;text-align:center;color:#555555;">详细说明</legend>
+	<p>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用柱状统计图可以方便看到每个月份的收益，折线统计图则可以看出每个月份收益的变化及增跌。
+		我们制作者也是十分的卖力，希望得到使用者的肯定。<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果您在使用过程中发现有数据不准确的地方请及时联系我们，我们的免费热线电话是400-88919889，
+		我们会第一时间修复问题，以确保您能够方便的完成工作。在此，我们要感谢我们的教员闫老师和班主任沈老师，感谢你们走心的呵护和细心教导。这个项目的完成
+		绝不可能是一个人的功劳，它凝结了我们T39-Y2第二组所有人的努力和心血。希望我们的同学和老师能够身体健康、万事如意、笑口常开。希望我们班的程序猿们都能找到
+		满意的另一半，让那些说程序猿找不到对象的人哭晕在厕所。希望我们都能找到一份好工作，人生就像一次旅行每到一个地方都是下一站。所以，同学们让我们忘掉所有的不开心，
+		用100%的热情去迎接以后的人生。我相信生活是一面镜子，你脸上的笑容有多灿烂生活就会多美好。<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2017年1月14日&nbsp;&nbsp;&nbsp;&nbsp;whz
+	</p>
+</fieldset>
+
+<table style="display:none;">
+	<caption>月份收益折线图</caption>
+	<thead>
+		<tr>
+			<td></td>
+<!-- 			<th>一月</th>
+			<th>二月</th>
+			<th>三月</th>
+			<th>四月</th>
+			<th>五月</th>
+			<th>六月</th>
+			<th>七月</th>
+			<th>八月</th>
+			<th>九月</th>
+			<th>十月</th>
+			<th>十一月</th>
+			<th>十二月</th> -->
+			<s:iterator value="reportdResults">
+				<th><s:property value="quarter"/>月</th>
+			</s:iterator>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th>收益</th>
+			<s:iterator value="reportdResults">
+				<td><s:property value="money"/></td>
+			</s:iterator>
+		</tr>
+	</tbody>
+</table>
+<!-- <div style="margin-left:600px;margin-top:-200px;">
+	<fieldset>
+		<legend>详细说明</legend>
+	</fieldset>
+</div> -->
+

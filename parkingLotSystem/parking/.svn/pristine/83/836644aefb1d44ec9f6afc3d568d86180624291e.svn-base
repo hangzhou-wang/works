@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="parkingLot" extends="json-default" namespace="/">
+		<interceptors>
+			<!-- 自定义授权拦截器 -->
+			<interceptor name="authrizationInterceptor" class="com.parking.interceptor.AuthrizationInterceptor"></interceptor>
+			<!-- 自定义拦截器栈 -->
+			<interceptor-stack name="authrizationStack">
+				<!-- 引用struts2默认的defaultStack拦截栈 -->
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<!-- 引用自定义的拦截器 -->
+				<interceptor-ref name="authrizationInterceptor"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="authrizationStack"></default-interceptor-ref>
+		<!-- 配置全局results -->
+		<global-results>
+			<result name="login" type="redirectAction">toGetIn</result>
+		</global-results>
+	
+		<!-- 配置失物招领Action -->
+		<!-- 得到所有车库 -->
+		<action name="getParkingLots" class="parkingLotAction" method="getPLs">
+			<result name="success">/jsp/admin/parkingSpace/toAddPL.jsp</result>
+		</action>
+		<!-- 添加车库 -->
+		<action name="addPL" class="parkingLotAction" method="addPL">
+			<result name="success" type="redirectAction">getParkingLots</result>
+		</action>
+		<!-- 车库信息 -->
+		<action name="getPLInfoById" class="parkingLotAction" method="getPLInfoById">
+			<result name="success">/jsp/admin/parkingSpace/PLInfo.jsp</result>
+		</action>
+		<!-- 车库添加车位信息 -->
+		<action name="addPSforPL" class="parkingLotAction" method="addPSforPL">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 删除车库 -->
+		<action name="delPL" class="parkingLotAction" method="delPL">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>    

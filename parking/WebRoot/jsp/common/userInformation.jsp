@@ -1,0 +1,71 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<style type="text/css">
+	#userInfo{margin:20px auto;}
+	#userInfo tr td{padding:8px 12px;}
+</style>
+<div style="width:80%;">
+	<a href="<%=basePath%>toWel" target="rightFrame">
+		<img style="margin-left:50px;;margin-top:10px;" src="<%=basePath%>images/icons/back.png"></img>
+	</a>
+	<a style="float:right;margin-top:25px;text-decoration:none;" href="<%=basePath%>toModifyUser" ><img align="absmiddle" src="<%=basePath %>images/icons/modifyNotice.png"></img>编辑</a>
+</div>
+<table id="userInfo">
+	<tr>
+		<td colspan="2" style="padding-left:90px;font-size:20px;color:#030303;">用户信息</td>
+	</tr>
+	<tr>
+		<td><img src="<%=basePath%>images/userName.png" align="absmiddle"></img>用户名</td>
+		<td>${user.name }</td>
+	</tr>
+	<tr>
+		<td><img src="<%=basePath%>images/realname.png" align="absmiddle"></img>真实姓名</td>
+		<td>${user.realname}</td>
+	</tr>
+	<tr>
+		<td><img src="<%=basePath%>images/phone.png" align="absmiddle"></img>联系方式</td>
+		<td>${user.phone}</td>
+	</tr>
+	<tr>
+		<td><img src="<%=basePath%>images/icons/idCard.png" align="absmiddle"></img>身份</td>
+		<td>
+			<s:if test="%{#session.user.status==0}">
+				普通用户
+			</s:if>
+			<s:elseif test="%{#session.user.status==1}">
+				管理员
+			</s:elseif>
+			<s:elseif test="%{#session.user.status==2}">
+				被封用户
+			</s:elseif>
+			<s:else>
+				尊贵会员
+			</s:else>
+		</td>
+	</tr>
+	<tr>
+		<td><img src="<%=basePath%>images/icons/integration.png" align="absmiddle"></img>积分</td>
+		<td>${user.integration}</td>
+	</tr>
+	<tr>
+		<td><img src="<%=basePath%>images/icons/regDate.png" align="absmiddle"></img>注册日期</td>
+		<td>
+			<s:date name="%{#session.user.regdate}" format="yyyy-MM-dd"/>
+		</td>
+	</tr>
+	<tr>
+		<td><img src="<%=basePath%>images/email.png" align="absmiddle"></img>邮箱</td>
+		<td>
+			<s:if test="%{#session.user.email==null}">
+				<font>该用户没有填写邮箱</font>
+			</s:if>
+			<s:else>
+				${user.email}
+			</s:else>
+		</td>
+	</tr>
+</table>

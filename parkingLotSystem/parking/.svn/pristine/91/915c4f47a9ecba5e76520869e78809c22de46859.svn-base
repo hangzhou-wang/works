@@ -1,0 +1,48 @@
+package com.parking.dao.impl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import com.parking.dao.ReportsDao;
+import com.parking.entity.ReportdResult;
+import com.parking.entity.Reports;
+
+public class ReportsDaoImpl extends HibernateDaoSupport implements ReportsDao {
+	/*添加新的报表信息*/
+	@Override
+	public void insertReports(Reports reports) {
+		getHibernateTemplate().save(reports);
+	}
+	/*获得报表中的信息*/
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<ReportdResult> getReportsInfo() {
+		return getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				List<ReportdResult> reportdResults=new ArrayList<ReportdResult>();
+				ReportdResult reportdResult=null;
+				String hql="select sum(r.money),to_char(r.time,'MM') from Reports r group by to_char(r.time,'MM') order by to_char(r.time,'MM') asc";
+				List<Object[]> reportsList= session.createQuery(hql).list();
+				for (Object[] object : reportsList) {
+					reportdResult=new ReportdResult();
+					reportdResult.setMoney((Double) object[0]);
+					reportdResult.setQuarter((String)object[1]);
+					reportdResults.add(reportdResult);
+				}
+				
+				System.out.println(reportsList);
+				return reportdResults;
+			}
+		});
+		
+	}
+
+}

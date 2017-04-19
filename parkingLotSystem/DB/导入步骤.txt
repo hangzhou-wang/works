@@ -1,0 +1,2 @@
+1、用sys登录导入parking - tablespace.SQL文件
+2、用park(密码park)登录导入parking2.11.sql文件；然后导入parking2.11-data.sql文件

@@ -1,0 +1,146 @@
+package com.parking.action;
+
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.parking.entity.ActionResult;
+import com.parking.entity.ParkingSpace;
+import com.parking.entity.Schdule;
+import com.parking.entity.Users;
+import com.parking.service.ParkingSpaceService;
+
+public class ParkingSpaceAction {
+	private ParkingSpaceService parkingSpaceService;
+	private List<ParkingSpace> parkingSpaceList;
+	private Integer totalPage;// 总页数
+	private Integer currentPage;// 当前页
+	private Integer ps_id;// 车位id
+	private ParkingSpace parkingSpace;// 车位
+	private ActionResult actionResult;
+	private Schdule schdule;
+	
+	
+	HttpServletRequest request = ServletActionContext.getRequest();
+	HttpSession session=ServletActionContext.getRequest().getSession();
+
+	/**
+	 * 车位列表
+	 */
+	public String Spacelist() {
+		int pageSize = 28;
+		Long count = parkingSpaceService.countSpace();
+		if (count <= 0) {
+			totalPage = 1;
+		} else {
+			totalPage = (int) ((count % pageSize == 0) ? (count / pageSize)
+					: (count / pageSize + 1));
+		}
+		if (currentPage == null) {
+			this.setCurrentPage(1);
+		}
+		int begin = (currentPage - 1) * pageSize;
+		parkingSpaceList = parkingSpaceService.psList(begin, pageSize);
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("currentPage", currentPage);
+		
+		Users userSession=(Users) session.getAttribute("user");
+		parkingSpace=parkingSpaceService.getPSByUserId(userSession.getId());
+		schdule=parkingSpaceService.getSCByUserId(userSession.getId());
+		return "success";
+	}
+	/**
+	 * 根据id查询车位信息
+	 * @return
+	 */
+	public String getPSById() {
+		parkingSpace = parkingSpaceService.getPSById(ps_id);
+		if (parkingSpace != null) {
+			return "success";
+		}
+		return "error";
+	}
+	/**
+	 * 停车
+	 * @return
+	 * @throws Exception
+	 */
+	public String pakingCar() throws Exception{
+		actionResult=new ActionResult();
+		int parkingCarRes=parkingSpaceService.updateParkingCar(parkingSpace);
+		if (parkingCarRes>0) {
+			actionResult.setCode(0);
+			actionResult.setMsg("停车成功");
+			Users userSession=(Users) session.getAttribute("user");
+			parkingSpaceService.delSCByUserId(userSession.getId());
+			return "success";
+		}else{
+			actionResult.setCode(1);
+			actionResult.setMsg("停车失败");
+			return "success";
+		}
+	}
+
+	public ParkingSpaceService getParkingSpaceService() {
+		return parkingSpaceService;
+	}
+
+	public void setParkingSpaceService(ParkingSpaceService parkingSpaceService) {
+		this.parkingSpaceService = parkingSpaceService;
+	}
+
+	public List<ParkingSpace> getParkingSpaceList() {
+		return parkingSpaceList;
+	}
+
+	public void setParkingSpaceList(List<ParkingSpace> parkingSpaceList) {
+		this.parkingSpaceList = parkingSpaceList;
+	}
+
+	public Integer getTotalPage() {
+		return totalPage;
+	}
+
+	public void setTotalPage(Integer totalPage) {
+		this.totalPage = totalPage;
+	}
+
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public Integer getPs_id() {
+		return ps_id;
+	}
+
+	public void setPs_id(Integer ps_id) {
+		this.ps_id = ps_id;
+	}
+
+	public ParkingSpace getParkingSpace() {
+		return parkingSpace;
+	}
+
+	public void setParkingSpace(ParkingSpace parkingSpace) {
+		this.parkingSpace = parkingSpace;
+	}
+	public ActionResult getActionResult() {
+		return actionResult;
+	}
+	public void setActionResult(ActionResult actionResult) {
+		this.actionResult = actionResult;
+	}
+	public Schdule getSchdule() {
+		return schdule;
+	}
+	public void setSchdule(Schdule schdule) {
+		this.schdule = schdule;
+	}
+
+}
